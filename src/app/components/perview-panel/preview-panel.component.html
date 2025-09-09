@@ -1,0 +1,39 @@
+
+<p-card *ngIf="country as c" class="shadow-1 border-round-2xl">
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center justify-content-between">
+      <div>
+        <h3 class="m-0">{{ c.name }}</h3>
+        <small class="text-500">{{ c.officialName }}</small>
+      </div>
+      <p-tag [value]="c.currencyCode || '—'" severity="info"></p-tag>
+    </div>
+  </ng-template>
+
+  <div class="grid formgrid p-fluid">
+    <div class="field col-12 md:col-6">
+      <label class="block text-600">Independent</label>
+      <div>{{ c.independent === null ? 'Unknown' : (c.independent ? 'Yes' : 'No') }}</div>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label class="block text-600">Status</label>
+      <div>{{ c.status || '—' }}</div>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label class="block text-600">Capital</label>
+      <div>{{ c.capital || '—' }}</div>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label class="block text-600">Region / Subregion</label>
+      <div>{{ c.region || '—' }}<span *ngIf="c.subregion"> / {{ c.subregion }}</span></div>
+    </div>
+    <div class="field col-12">
+      <label class="block text-600">Languages</label>
+      <div>{{ c.languages || '—' }}</div>
+    </div>
+    <div class="field col-12">
+      <label class="block text-600">Continents</label>
+      <div>{{ c.continents || '—' }}</div>
+    </div>
+  </div>
+</p-card>

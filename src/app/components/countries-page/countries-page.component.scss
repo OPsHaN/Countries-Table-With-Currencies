@@ -1,0 +1,7 @@
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+:host ::ng-deep .p-toolbar {
+  border-radius: 1rem;
+}

@@ -1,0 +1,95 @@
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="page p-3">
+  <p-table
+    #dt
+    [value]="all()"
+    [paginator]="true"
+    [rows]="rows"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+    [loading]="loading()"
+    selectionMode="single"
+    dataKey="id"
+    [(selection)]="selected"
+    (onRowSelect)="onRowClick($event.data)"
+    responsiveLayout="scroll"
+    [tableStyle]="{ 'min-width': '60rem' }">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
+        <th pSortableColumn="region">Region <p-sortIcon field="region" /></th>
+        <th pSortableColumn="capital">Capital <p-sortIcon field="capital" /></th>
+        <th pSortableColumn="currencyCode">Currency <p-sortIcon field="currencyCode" /></th>
+        <th >Actions & Per Page</th>
+
+      </tr>
+      <tr>
+        <th>
+          <input pInputText type="text" placeholder="Filter by name"
+                 (input)="dt.filter($any($event.target).value, 'name', 'contains')" />
+        </th>
+        <th>
+          <input pInputText type="text" placeholder="Filter by region"
+                 (input)="dt.filter($any($event.target).value, 'region', 'contains')" />
+        </th>
+        <th>
+          <input pInputText type="text" placeholder="Filter by capital"
+                 (input)="dt.filter($any($event.target).value, 'capital', 'contains')" />
+        </th>
+        <th>
+          <input pInputText type="text" placeholder="Filter by currency"
+                 (input)="dt.filter($any($event.target).value, 'currencyCode', 'contains')" />
+        </th>
+        <th>
+      <p-dropdown
+        [options]="rowsPerPageOptions"
+        [(ngModel)]="rows"
+        [editable]="false"
+        styleClass="w-8rem">
+      </p-dropdown>
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row>
+      <tr [pSelectableRow]="row">
+        <td>{{ row.name }}</td>
+        <td>{{ row.region }}</td>
+        <td>{{ row.capital }}</td>
+        <td>
+          <p-tag [value]="row.currencyCode || '—'" severity="info" styleClass="text-xs"></p-tag>
+        </td>
+        <td>
+          <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="openUpdate(row)"></button>
+          <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="onDelete(row)"></button>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr><td colspan="4">No data found.</td></tr>
+    </ng-template>
+  </p-table>
+
+<p-dialog 
+  [(visible)]="showDialogPreview" 
+  [modal]="true" 
+  [style]="{ width: '50vw' }"
+  header="Country Details"
+  [closable]="true"
+  (onHide)="selected = null"
+>
+  <app-preview-panel *ngIf="selected" [country]="selected"></app-preview-panel>
+</p-dialog>
+
+
+  <app-country-dialog
+    [visible]="showDialog()"
+    [country]="selected"
+    [currencies]="currencies()"
+    (close)="showDialog.set(false)"
+    (saved)="onSaved($event)">
+  </app-country-dialog>
+  
+</div>
